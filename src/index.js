@@ -4,8 +4,8 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
-import Root from "./routes/root";
-import Words from "./routes/words";
+import Root from "./routes/Root";
+import WordsList from "./routes/WordsList";
 
 const router = createBrowserRouter([
     {
@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/words",
-        element: <Words/>,
+        element: <WordsList/>,
     }
 ]);
 
