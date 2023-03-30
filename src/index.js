@@ -6,8 +6,8 @@ import {
 } from "react-router-dom";
 import Root from "./routes/Root";
 import {Provider} from "react-redux";
-import store from './redux/store'
 import Parolangelo from "./routes/Parolangelo";
+import {store} from "./redux/store";
 
 const router = createBrowserRouter([
     {

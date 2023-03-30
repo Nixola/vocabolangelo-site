@@ -1,45 +1,41 @@
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../redux/store";
+import $ from "jquery";
+import {setRdfStore} from "../redux/RdfStore";
+import {useEffect} from "react";
 
-import {Component} from "react";
-import {$RDF} from "../rdf/$RDF";
-import $ from 'jquery';
-import {DCT, VOCANG} from "../rdf/NameSpaces";
+export default function Parolangelo() {
 
-export default class Parolangelo extends Component{
+    const dispatch = useDispatch()
 
-    store = $RDF.graph()
+    useEffect(() => {
+        $.get('/schema/vocabolangelo.ttl', function (data) {
+            const $RDF = require("rdflib")
+            const rdfStore = $RDF.graph()
+            $RDF.parse(data, rdfStore, "http://www.vocabolangelo.org/")
+            dispatch(setRdfStore(rdfStore));
+        })
+    }, []);
 
-    componentDidMount(): void {
-        this.getOntology()
-    }
-
-    async getOntology() {
-        $.get(
-            '/schema/vocabolangelo.ttl',
-            function(data: string) {
-            try {
-                console.log(data.trim())
-                var store = $RDF.graph()
-                $RDF.parse(data, store, "http://www.vocabolangelo.org/")
-                let creators = store.each(VOCANG("omnicio"), DCT("creator"), undefined)
-                for (var i=0; i< creators.length;i++) {
-                    let el = creators[i]
-                    console.log(el.value) // the WebID of a friend
-                }
-            } catch (err) {
-            console.log(err)
-            }
-        }).catch(err => console.log(err));
-
-
-    }
-
-    render(): JSX.Element {
-        return (
-            <>
-                <div>
-
+    const store = useSelector((state: RootState) => state.rdfStore)
+    console.log(store.statements)
+    return (
+        <>
+            <section>
+                <header><h2> </h2></header>
+                <div className="content">
+                    <ul>
+                            <>
+                                <li>
+                                    <a href="TODO LINK TO WORD">
+                                        {store.statements.toString()}
+                                    </a>
+                                </li>
+                            </>
+                        )
+                    </ul>
                 </div>
-            </>
-        );
-    }
-};
+            </section>
+        </>
+    );
+}
