@@ -1,0 +1,1 @@
+ export const $RDF = require("rdflib")

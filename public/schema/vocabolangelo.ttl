@@ -13,7 +13,6 @@
 
 vocang:VocabolangeloRDF
     a owl:Ontology ;
-    owl:imports <http://www.perceive.net/schemas/20021119/relationship/relationship.rdf> ;
     rdfs:label "Vocabolangelo RDF" ;
     rdfs:comment "Un'ontologia creata per il Vocabolangelo, utilizzata per memorizzare le parole,  definizioni, persone, relazioni etc."@it ;
     rdfs:seeAlso "https://github.com/AngeloFilaseta/vocabolangelo-rdf" .
