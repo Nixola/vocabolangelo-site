@@ -1,13 +1,11 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 interface LinkedLiProps {
     text: string;
+    link: string;
 }
 
-export const LinkedLi: React.FC<LinkedLiProps> = ({ text }) => {
-    return <li>
-            <a href="TODO LINK TO WORD">
-                {text}
-            </a>
-        </li>;
+export const LinkedLi: React.FC<LinkedLiProps> = ({ text, link }) => {
+    return <li><Link to={link}>{text}</Link></li>;
 }

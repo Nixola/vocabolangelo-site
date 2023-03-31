@@ -17,7 +17,7 @@ export default function Parolangelo(): JSX.Element {
                 <div className="content">
                     <ul>
                         {parolangelo.map((concept: Node) =>
-                            <LinkedLi text={store.any(concept, SKOS('prefLabel')).value}/>
+                            <LinkedLi text={store.any(concept, SKOS('prefLabel')).value} link={"/todo"}/>
                         )}
                     </ul>
                 </div>
