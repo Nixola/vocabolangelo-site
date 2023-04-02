@@ -1,15 +1,16 @@
 import React from "react";
 import {LinkedLi} from "./LinkedLi";
-import {Node} from "rdflib"
 
-interface AlphabeticListProps {
+interface AlphabeticListProps<T>{
     title: string;
-    list: Node[]
-    elementName: (node: Node) => string
-    elementLink: (node: Node) => string
+    list: T[]
+    elementName: (node: T) => string
+    elementLink: (node: T) => string
 }
-export const AlphabeticList: React.FC<AlphabeticListProps> = (
-    {title, list, elementName, elementLink}) => {
+
+export function AlphabeticList<T>(props: AlphabeticListProps<T>) {
+    const {title, list, elementName, elementLink} = props;
+
     return (
         <>
             <section>
@@ -25,3 +26,4 @@ export const AlphabeticList: React.FC<AlphabeticListProps> = (
         </>
     );
 }
+

@@ -1,13 +1,11 @@
 import {AlphabeticList} from "../components/common/AlphabeticList";
-import {getConcepts} from "../api/concept/getConcepts";
 import React from "react";
-import {Node} from "rdflib"
-import "../api/concept/prefLabel";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
+import {Concept} from "../rdf/types/Concept";
 
 interface ParolangeloState {
-    parolangelo: Node[];
+    parolangelo: Concept[];
 }
 
 export default class Parolangelo extends React.Component<any, ParolangeloState> {
@@ -18,9 +16,9 @@ export default class Parolangelo extends React.Component<any, ParolangeloState> 
     }
 
     componentDidMount() {
-        getConcepts().then(nodes => {
+        Concept.all().then(nodes => {
             this.setState({
-                parolangelo: nodes.sort((a, b) => a.PrefLabel().localeCompare(b.PrefLabel()))
+                parolangelo: nodes.sort((a, b) => a.prefLabel.localeCompare(b.prefLabel))
             });
         })
     }
@@ -31,8 +29,8 @@ export default class Parolangelo extends React.Component<any, ParolangeloState> 
             <AlphabeticList
                 title={"Parolangelo"}
                 list={this.state.parolangelo}
-                elementName={node => node.PrefLabel()}
-                elementLink={node => "/parolangelo/" + node.PrefLabel()}
+                elementName={node => node.prefLabel}
+                elementLink={node => "/parolangelo/" + node.prefLabel}
             />
             <Footer/>
         </>
