@@ -1,12 +1,10 @@
 import React from "react";
 
-interface EmptyProps {
-}
 interface DisclaimerState {
     isDisclaimerVisible: boolean;
 }
 
-export default class Disclaimer extends React.Component<EmptyProps, DisclaimerState> {
+export default class Disclaimer extends React.Component<any, DisclaimerState> {
 
     constructor(props: any) {
         super(props);

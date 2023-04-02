@@ -5,10 +5,7 @@ import {
     RouterProvider,
 } from "react-router-dom";
 import Root from "./routes/Root";
-import {Provider} from "react-redux";
 import Parolangelo from "./routes/Parolangelo";
-import {store} from "./redux/store";
-import StateLoader from "./redux/StateLoader";
 
 const router = createBrowserRouter([
     {
@@ -22,10 +19,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <Provider store={store}>
-        <StateLoader/>
         <React.StrictMode>
-            <RouterProvider router={router} />
+                <RouterProvider router={router}/>
         </React.StrictMode>
-    </Provider>
 );

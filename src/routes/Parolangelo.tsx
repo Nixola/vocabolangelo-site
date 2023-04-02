@@ -1,22 +1,22 @@
-import {useSelector} from "react-redux";
-import {RootState} from "../redux/store";
 import {useEffect} from "react";
 import {AlphabeticList} from "../components/common/AlphabeticList";
 import {getConceptsOrderedByPrefLabel} from "../api/ConceptAPI";
-import {Bindings} from "rdflib/lib/types";
+import {checkStore, rdfStore} from "../rdf/store";
 
 export default function Parolangelo(): JSX.Element {
 
-    const store = useSelector((state: RootState) => state.rdfStore)
+    useEffect((): void => {
+        checkStore().then(r => {
+            if(r) {
+                getConceptsOrderedByPrefLabel(rdfStore, callback)
+            } else {
+                throw new Error("RDF Store could not be loaded correctly.")
+            }
+        })
+    }, []);
 
-    useEffect(() => {
-        getConceptsOrderedByPrefLabel(store, assignState)
-    }, [store]);
-
-
-    function assignState(bindings: Bindings) {
-        console.log(bindings)
+    function callback(){
+      console.log("il gioco")
     }
-
     return <AlphabeticList title={"Parolangelo"} list={[]}/>;
 }
