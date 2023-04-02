@@ -2,7 +2,7 @@ import {AlphabeticList} from "../components/common/AlphabeticList";
 import {getConcepts} from "../api/concept/getConcepts";
 import React from "react";
 import {Node} from "rdflib"
-import {prefLabel} from "../api/concept/prefLabel";
+import "../api/concept/prefLabel";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 
@@ -19,10 +19,8 @@ export default class Parolangelo extends React.Component<any, ParolangeloState> 
 
     componentDidMount() {
         getConcepts().then(nodes => {
-            console.log("entered")
-            console.log(nodes.length)
             this.setState({
-                parolangelo: nodes
+                parolangelo: nodes.sort((a, b) => a.PrefLabel().localeCompare(b.PrefLabel()))
             });
         })
     }
@@ -33,8 +31,8 @@ export default class Parolangelo extends React.Component<any, ParolangeloState> 
             <AlphabeticList
                 title={"Parolangelo"}
                 list={this.state.parolangelo}
-                elementName={node => prefLabel(node)}
-                elementLink={node => "/" + prefLabel(node)}
+                elementName={node => node.PrefLabel()}
+                elementLink={node => "/parolangelo/" + node.PrefLabel()}
             />
             <Footer/>
         </>
