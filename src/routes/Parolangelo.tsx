@@ -1,22 +1,42 @@
-import {useEffect} from "react";
 import {AlphabeticList} from "../components/common/AlphabeticList";
-import {getConceptsOrderedByPrefLabel} from "../api/ConceptAPI";
-import {checkStore, rdfStore} from "../rdf/store";
+import {getConcepts} from "../api/concept/getConcepts";
+import React from "react";
+import {Node} from "rdflib"
+import {prefLabel} from "../api/concept/prefLabel";
+import Header from "../components/common/Header";
+import Footer from "../components/common/Footer";
 
-export default function Parolangelo(): JSX.Element {
+interface ParolangeloState {
+    parolangelo: Node[];
+}
 
-    useEffect((): void => {
-        checkStore().then(r => {
-            if(r) {
-                getConceptsOrderedByPrefLabel(rdfStore, callback)
-            } else {
-                throw new Error("RDF Store could not be loaded correctly.")
-            }
-        })
-    }, []);
+export default class Parolangelo extends React.Component<any, ParolangeloState> {
 
-    function callback(){
-      console.log("il gioco")
+    constructor(props: any) {
+        super(props);
+        this.state = {parolangelo: []};
     }
-    return <AlphabeticList title={"Parolangelo"} list={[]}/>;
+
+    componentDidMount() {
+        getConcepts().then(nodes => {
+            console.log("entered")
+            console.log(nodes.length)
+            this.setState({
+                parolangelo: nodes
+            });
+        })
+    }
+
+    render() {
+        return <>
+            <Header/>
+            <AlphabeticList
+                title={"Parolangelo"}
+                list={this.state.parolangelo}
+                elementName={node => prefLabel(node)}
+                elementLink={node => "/" + prefLabel(node)}
+            />
+            <Footer/>
+        </>
+    }
 }

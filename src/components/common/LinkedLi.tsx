@@ -7,5 +7,5 @@ export interface LinkedLiProps {
 }
 
 export const LinkedLi: React.FC<LinkedLiProps> = ({ text, link }) => {
-    return <li><Link to={link}>{text}</Link></li>;
+    return <li key={text}><Link to={link}>{text}</Link></li>;
 }
