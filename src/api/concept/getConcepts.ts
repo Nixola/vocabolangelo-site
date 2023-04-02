@@ -1,12 +1,8 @@
-
-import {RDF, SKOS} from "../../rdf/NameSpaces";
-import {rdfStore} from "../../rdf/store";
+import {SKOS} from "../../rdf/NameSpaces";
 import {Node} from "rdflib"
-import {safeCall} from "../safeCall";
+import {getNodesOfType} from "../util/getNodeOfType";
 
 export async function getConcepts(): Promise<Node[]> {
-    return safeCall<Node[]>(() => {
-            return rdfStore.each(undefined, RDF("type"), SKOS("Concept"))
-    })
+    return getNodesOfType(SKOS("Concept"))
 }
 
