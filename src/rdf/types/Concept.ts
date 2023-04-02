@@ -17,11 +17,13 @@ export class Concept extends RDFNode {
     /**
      * Mapping of http://www.w3.org/2004/02/skos/core#definition.
      */
-    private readonly _definition: string ;
+    private readonly _definitions: string[] ;
     constructor(node: Node){
         super(node)
         this._prefLabel = this.getSKOSProperty("prefLabel")
-        this._definition = this.getSKOSProperty("definition")
+        this._definitions = rdfStore.each(
+            this.node as Quad_Subject, SKOS("definition"
+        ), undefined).map(node=> node.value)
     };
 
     private getSKOSProperty(property: string): string {
@@ -32,8 +34,8 @@ export class Concept extends RDFNode {
         return this._prefLabel
     }
 
-    public get definition(): string {
-        return this._definition
+    public get definitions(): string[] {
+        return this._definitions
     }
 
     public static async all(): Promise<Concept[]>{
