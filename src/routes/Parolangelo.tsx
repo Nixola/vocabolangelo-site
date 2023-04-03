@@ -3,6 +3,8 @@ import React from "react";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import {Concept} from "../rdf/types/Concept";
+import {vocang} from "../rdf/prefixes";
+import "../rdf/namedNodeExtensions"
 
 interface ParolangeloState {
     parolangelo: Concept[];
@@ -30,7 +32,7 @@ export default class Parolangelo extends React.Component<any, ParolangeloState> 
                 title={"Parolangelo"}
                 list={this.state.parolangelo}
                 elementName={concept => concept.prefLabel}
-                elementLink={concept => "/parolangelo/" + concept.node.toNQ()}
+                elementLink={concept => "/parolangelo/" + concept.node.RelativeUri(vocang)}
             />
             <Footer/>
         </>

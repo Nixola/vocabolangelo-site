@@ -2,8 +2,8 @@ import {RDFNamedNode} from "../RDFNamedNode";
 import {NamedNode} from "rdflib"
 import {mapFromRDF, StringCheckStrategy} from "../../util/stringChecks";
 import {Quad_Subject} from "rdflib/lib/tf-types";
-import {SKOS} from "../NameSpaces";
 import {RDFStore} from "../RDFStore";
+import {skos} from "../prefixes";
 
 /**
  * Class representing a http://www.w3.org/2004/02/skos/core#Concept.
@@ -21,13 +21,13 @@ export class Concept extends RDFNamedNode {
         super(node)
         this._prefLabel = this.getSKOSProperty("prefLabel")
         this._definitions = RDFStore.store.each(
-            this.node as Quad_Subject, SKOS("definition"
+            this.node as Quad_Subject, skos.namespace("definition"
         ), undefined).map(node=> node.value)
     };
 
     private getSKOSProperty(property: string): string {
         return mapFromRDF(
-            RDFStore.store.any(this.node as Quad_Subject, SKOS(property))?.value, StringCheckStrategy.Blank
+            RDFStore.store.any(this.node as Quad_Subject, skos.namespace(property))?.value, StringCheckStrategy.Blank
         )
     }
 
@@ -40,7 +40,7 @@ export class Concept extends RDFNamedNode {
     }
 
     public static async all(): Promise<Concept[]>{
-        let nodes = await RDFNamedNode.ofType(SKOS("Concept"))
+        let nodes = await RDFNamedNode.ofType(skos.namespace("Concept"))
         return nodes.map((node) => new Concept(node))
     }
 }

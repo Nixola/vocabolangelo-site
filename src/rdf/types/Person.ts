@@ -2,7 +2,7 @@ import {RDFNamedNode} from "../RDFNamedNode";
 import {NamedNode} from "rdflib"
 import {mapFromRDF, StringCheckStrategy} from "../../util/stringChecks";
 import {Quad_Subject} from "rdflib/lib/tf-types";
-import {FOAF} from "../NameSpaces";
+import {foaf} from "../prefixes";
 import {RDFStore} from "../RDFStore";
 
 /**
@@ -30,7 +30,7 @@ export class Person extends RDFNamedNode {
 
     private getFOAFProperty(property: string): string {
         return mapFromRDF(
-            RDFStore.store.any(this.node as Quad_Subject, FOAF(property))?.value, StringCheckStrategy.Blank
+            RDFStore.store.any(this.node as Quad_Subject, foaf.namespace(property))?.value, StringCheckStrategy.Blank
         )
     }
 
@@ -47,7 +47,7 @@ export class Person extends RDFNamedNode {
     }
 
     public async all(): Promise<Person[]>{
-        let nodes = await RDFNamedNode.ofType(FOAF("Person"))
+        let nodes = await RDFNamedNode.ofType(foaf.namespace("Person"))
         return nodes.map((node) => new Person(node))
     }
 }
