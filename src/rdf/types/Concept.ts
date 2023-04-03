@@ -1,5 +1,5 @@
 import {RDFNamedNode} from "../RDFNamedNode";
-import {NamedNode} from "rdflib"
+import {Empty, NamedNode} from "rdflib"
 import {mapFromRDF, StringCheckStrategy} from "../../util/stringChecks";
 import {Quad_Subject} from "rdflib/lib/tf-types";
 import {RDFStore} from "../RDFStore";
@@ -43,5 +43,6 @@ export class Concept extends RDFNamedNode {
         let nodes = await RDFNamedNode.ofType(skos.namespace("Concept"))
         return nodes.map((node) => new Concept(node))
     }
+
 }
 

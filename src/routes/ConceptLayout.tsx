@@ -1,22 +1,42 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {NamedSection} from "../components/common/NamedSection";
-
-import { useLoaderData } from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {Concept} from "../rdf/types/Concept";
+import {RDFStore} from "../rdf/RDFStore";
+import {vocang} from "../rdf/prefixes";
+import Header from "../components/common/Header";
+import Footer from "../components/common/Footer";
+import DefaultLayout from "../components/common/DefaultLayout";
 
-//export async function loader({ params }): Promise<Concept> {
-    //const concept: Concept = await getContact(params.conceptId);
-    //return { concept };
-//}
 
-export function ConceptLayout(props: any) {
-    //const { concept: Concept } = useLoaderData();
-    return (
-        <>
-            <h2>a</h2>
-            <NamedSection title={"Definizione"} content={<DefinitionList definitions={[]}/>}/>
-        </>
-    );
+export function ConceptLayout() {
+
+    const [concept, setConcept] = useState({});
+    const params = useParams()
+
+    useEffect(() => {
+        RDFStore.safeCall(store => {
+            return new Concept(store.sym(vocang.uri + params.conceptId))
+        }).then(concept =>
+            setConcept(concept)
+        )
+    }, [params.conceptId])
+
+    if(concept !== undefined && concept !== null) {
+        let c = concept as Concept
+        return (
+            <>
+                <DefaultLayout title={c.prefLabel} content = {
+                    <NamedSection
+                        title={"Definizione"}
+                        content={<DefinitionList definitions={c.definitions}/>}
+                    />
+                }/>
+            </>
+        );
+    } else {
+        return <></>
+    }
 }
 
 interface DefinitionListProps {
@@ -28,7 +48,7 @@ function DefinitionList(props: DefinitionListProps) {
     return (
         <>
             <ol>
-                {definitions.map(def => {return <li>{ def }</li>})}
+                {definitions?.map(def => {return <li>{ def }</li>})}
             </ol>
         </>
     );

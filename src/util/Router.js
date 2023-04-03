@@ -1,7 +1,7 @@
 import {createBrowserRouter} from "react-router-dom";
 import Root from "../routes/Root";
 import Parolangelo from "../routes/Parolangelo";
-import {ConceptLayout} from "../routes/ConceptLayout";
+import {ConceptLayout, loader as conceptLoader} from "../routes/ConceptLayout";
 import React from "react";
 
 export const router = createBrowserRouter([
@@ -14,8 +14,7 @@ export const router = createBrowserRouter([
         element: <Parolangelo/>,
     },
     {
-        path: "parolangelo/:concept",
+        path: "parolangelo/:conceptId",
         element: <ConceptLayout />
-
     },
 ]);
