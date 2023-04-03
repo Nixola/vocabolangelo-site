@@ -2,7 +2,7 @@ import {RDFNamedNode} from "../RDFNamedNode";
 import {NamedNode} from "rdflib"
 import {Quad_Subject} from "rdflib/lib/tf-types";
 import {RDFStore} from "../RDFStore";
-import {dct, schema, skos} from "../prefixes";
+import {dct, lexinfo, schema, skos} from "../prefixes";
 import "../extensions/storeExtensions"
 import {Person} from "./Person";
 
@@ -14,6 +14,10 @@ export class Concept extends RDFNamedNode {
      * Mapping of http://www.w3.org/2004/02/skos/core#prefLabel.
      */
     private readonly _prefLabel: string ;
+    /**
+     * Mapping of http://www.lexinfo.net/ontology/2.0/lexinfo#pronunciation
+     */
+    private readonly _pronunciation: string | undefined ;
     /**
      * Mapping of http://www.w3.org/2004/02/skos/core#definition.
      */
@@ -61,6 +65,7 @@ export class Concept extends RDFNamedNode {
         super(node)
         let quadSubj = this.node as Quad_Subject
         this._prefLabel = RDFStore.store.ValueOrFail(quadSubj, skos.namespace("prefLabel"))
+        this._pronunciation = RDFStore.store.PartialValue(quadSubj, lexinfo.namespace("pronunciation"))
         this._definitions = RDFStore.store.EachValue(quadSubj, skos.namespace("definition"))
         this._examples = RDFStore.store.EachValue(quadSubj, skos.namespace("example"))
         this._creators = RDFStore.store.MapEachValue(
@@ -86,6 +91,10 @@ export class Concept extends RDFNamedNode {
 
     public get prefLabel(): string {
         return this._prefLabel
+    }
+
+    public get pronunciation(): string | undefined {
+        return this._pronunciation
     }
 
     public get definitions(): string[] {

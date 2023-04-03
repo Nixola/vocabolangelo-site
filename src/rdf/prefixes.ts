@@ -2,6 +2,7 @@ import {Prefix} from "./Prefix";
 
 export const dct: Prefix = new Prefix("http://purl.org/dc/terms/")
 export const foaf: Prefix = new Prefix("http://xmlns.com/foaf/0.1/")
+export const lexinfo: Prefix = new Prefix("http://www.lexinfo.net/ontology/2.0/lexinfo#")
 export const modsci: Prefix = new Prefix("https://w3id.org/skgo/modsci#")
 export const rdf: Prefix = new Prefix("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
 export const rdfs: Prefix = new Prefix("http://www.w3.org/2000/01/rdf-schema#")
