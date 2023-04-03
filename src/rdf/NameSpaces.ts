@@ -1,5 +1,6 @@
 import {Namespace} from "rdflib";
 
+
 export const DCT = Namespace("http://purl.org/dc/terms/")
 export const FOAF = Namespace("http://xmlns.com/foaf/0.1/")
 export const MODSCI = Namespace("https://w3id.org/skgo/modsci#")
@@ -12,3 +13,4 @@ export const SCOT = Namespace("http://rdfs.org/scot/ns#")
 export const SKOS = Namespace("http://www.w3.org/2004/02/skos/core#")
 export const VOCANG = Namespace("http://www.vocabolangelo.org/")
 export const XSD = Namespace("http://www.w3.org/2001/XMLSchema#")
+

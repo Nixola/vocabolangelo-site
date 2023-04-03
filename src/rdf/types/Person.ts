@@ -1,15 +1,14 @@
-import {RDFNode} from "../RDFNode";
-import {Node} from "rdflib"
+import {RDFNamedNode} from "../RDFNamedNode";
+import {NamedNode} from "rdflib"
 import {mapFromRDF, StringCheckStrategy} from "../../util/stringChecks";
-import {rdfStore} from "../store";
 import {Quad_Subject} from "rdflib/lib/tf-types";
 import {FOAF} from "../NameSpaces";
-import {getNodesOfType} from "../../api/util/getNodeOfType";
+import {RDFStore} from "../RDFStore";
 
 /**
  * Class representing a http://xmlns.com/foaf/0.1/Person.
  */
-export class Person extends RDFNode {
+export class Person extends RDFNamedNode {
     /**
      * Mapping of http://xmlns.com/foaf/0.1/firstName.
      */
@@ -22,7 +21,7 @@ export class Person extends RDFNode {
      * Mapping of http://xmlns.com/foaf/0.1/nickname.
      */
     private readonly _nick: string ;
-    constructor(node: Node){
+    constructor(node: NamedNode){
         super(node)
         this._firstName = this.getFOAFProperty("firstName")
         this._lastName = this.getFOAFProperty("lastName")
@@ -30,7 +29,9 @@ export class Person extends RDFNode {
     };
 
     private getFOAFProperty(property: string): string {
-        return mapFromRDF(rdfStore.any(this.node as Quad_Subject, FOAF(property))?.value, StringCheckStrategy.Blank)
+        return mapFromRDF(
+            RDFStore.store.any(this.node as Quad_Subject, FOAF(property))?.value, StringCheckStrategy.Blank
+        )
     }
 
     public get firstName(): string {
@@ -46,7 +47,7 @@ export class Person extends RDFNode {
     }
 
     public async all(): Promise<Person[]>{
-        let nodes = await getNodesOfType(FOAF("Person"))
+        let nodes = await RDFNamedNode.ofType(FOAF("Person"))
         return nodes.map((node) => new Person(node))
     }
 }

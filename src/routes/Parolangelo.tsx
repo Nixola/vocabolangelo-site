@@ -29,8 +29,8 @@ export default class Parolangelo extends React.Component<any, ParolangeloState> 
             <AlphabeticList
                 title={"Parolangelo"}
                 list={this.state.parolangelo}
-                elementName={node => node.prefLabel}
-                elementLink={node => "/parolangelo/" + node.prefLabel}
+                elementName={concept => concept.prefLabel}
+                elementLink={concept => "/parolangelo/" + concept.node.toNQ()}
             />
             <Footer/>
         </>

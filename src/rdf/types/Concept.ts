@@ -1,15 +1,14 @@
-import {RDFNode} from "../RDFNode";
-import {Node} from "rdflib"
+import {RDFNamedNode} from "../RDFNamedNode";
+import {NamedNode} from "rdflib"
 import {mapFromRDF, StringCheckStrategy} from "../../util/stringChecks";
-import {rdfStore} from "../store";
 import {Quad_Subject} from "rdflib/lib/tf-types";
 import {SKOS} from "../NameSpaces";
-import {getNodesOfType} from "../../api/util/getNodeOfType";
+import {RDFStore} from "../RDFStore";
 
 /**
  * Class representing a http://www.w3.org/2004/02/skos/core#Concept.
  */
-export class Concept extends RDFNode {
+export class Concept extends RDFNamedNode {
     /**
      * Mapping of http://www.w3.org/2004/02/skos/core#prefLabel.
      */
@@ -18,16 +17,18 @@ export class Concept extends RDFNode {
      * Mapping of http://www.w3.org/2004/02/skos/core#definition.
      */
     private readonly _definitions: string[] ;
-    constructor(node: Node){
+    constructor(node: NamedNode){
         super(node)
         this._prefLabel = this.getSKOSProperty("prefLabel")
-        this._definitions = rdfStore.each(
+        this._definitions = RDFStore.store.each(
             this.node as Quad_Subject, SKOS("definition"
         ), undefined).map(node=> node.value)
     };
 
     private getSKOSProperty(property: string): string {
-        return mapFromRDF(rdfStore.any(this.node as Quad_Subject, SKOS(property))?.value, StringCheckStrategy.Blank)
+        return mapFromRDF(
+            RDFStore.store.any(this.node as Quad_Subject, SKOS(property))?.value, StringCheckStrategy.Blank
+        )
     }
 
     public get prefLabel(): string {
@@ -39,7 +40,7 @@ export class Concept extends RDFNode {
     }
 
     public static async all(): Promise<Concept[]>{
-        let nodes = await getNodesOfType(SKOS("Concept"))
+        let nodes = await RDFNamedNode.ofType(SKOS("Concept"))
         return nodes.map((node) => new Concept(node))
     }
 }
