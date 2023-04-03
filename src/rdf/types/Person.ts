@@ -1,7 +1,5 @@
 import {RDFNamedNode} from "../RDFNamedNode";
 import {NamedNode} from "rdflib"
-import {mapFromRDF, StringCheckStrategy} from "../../util/stringChecks";
-import {Quad_Subject} from "rdflib/lib/tf-types";
 import {foaf} from "../prefixes";
 import {RDFStore} from "../RDFStore";
 
@@ -23,16 +21,10 @@ export class Person extends RDFNamedNode {
     private readonly _nick: string ;
     constructor(node: NamedNode){
         super(node)
-        this._firstName = this.getFOAFProperty("firstName")
-        this._lastName = this.getFOAFProperty("lastName")
-        this._nick = this.getFOAFProperty("nick")
+        this._firstName = RDFStore.store.ValueOrEmptyString(node, foaf.namespace("firstName"))
+        this._lastName = RDFStore.store.ValueOrEmptyString(node, foaf.namespace("lastName"))
+        this._nick = RDFStore.store.ValueOrEmptyString(node, foaf.namespace("nick"))
     };
-
-    private getFOAFProperty(property: string): string {
-        return mapFromRDF(
-            RDFStore.store.any(this.node as Quad_Subject, foaf.namespace(property))?.value, StringCheckStrategy.Blank
-        )
-    }
 
     public get firstName(): string {
         return this._firstName

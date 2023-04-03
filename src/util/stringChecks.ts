@@ -1,10 +1,11 @@
 
 export enum StringCheckStrategy {
     Blank = "BLANK",
-    Fail = "FAIL"
+    Fail = "FAIL",
+    Undefined = "UNDEFINED"
 }
 
-export function mapFromRDF(str: string | undefined | null, strategy: StringCheckStrategy): string {
+export function mapStringFromRDF(str: string | undefined | null, strategy: StringCheckStrategy): string | undefined {
     if(str !== undefined && str !== null) {
         return str
     }
@@ -12,6 +13,8 @@ export function mapFromRDF(str: string | undefined | null, strategy: StringCheck
         return ""
     } else if (strategy === StringCheckStrategy.Fail) {
         throw Error("Forbidden string value.")
+    } else if (strategy === StringCheckStrategy.Undefined) {
+        return undefined
     }
     throw Error("RDF string processing failed miserably.")
 }

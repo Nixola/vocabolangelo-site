@@ -2,7 +2,7 @@ import {AlphabeticList} from "../components/common/AlphabeticList";
 import React from "react";
 import {Concept} from "../rdf/types/Concept";
 import {vocang} from "../rdf/prefixes";
-import "../rdf/namedNodeExtensions"
+import "../rdf/extensions/namedNodeExtensions"
 import DefaultLayout from "../components/common/DefaultLayout";
 
 interface ParolangeloState {
