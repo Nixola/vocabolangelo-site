@@ -29,15 +29,20 @@ export default class Parolangelo extends React.Component<any, ParolangeloState> 
             return concept.node.RelativeUri(vocang)
         }
 
+        function alphabeticStrategy(concept: Concept, letter: string){
+            return concept.prefLabel.charAt(0).toLowerCase() === letter
+        }
+
         return <>
             <DefaultLayout title={"Parolangelo"} content={
-                <List
-                    type={ListType.Alphabetic}
-                    list={this.state.parolangelo}
-                    elementKey={concept => relativeConceptUri(concept)}
-                    elementContent={concept => <p>{concept.prefLabel}</p>}
-                    elementLink={concept => "/parolangelo/" + relativeConceptUri(concept)}
-                 />
+                    <List
+                        type={ListType.Alphabetic}
+                        list={this.state.parolangelo}
+                        elementKey={concept => relativeConceptUri(concept)}
+                        elementContent={concept => <p>{concept.prefLabel}</p>}
+                        elementLink={concept => "/parolangelo/" + relativeConceptUri(concept)}
+                        alphabeticStrategy={alphabeticStrategy}
+                    />
             }/>
         </>
     }

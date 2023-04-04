@@ -22,8 +22,8 @@ export default function Header() {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={"/autori"} className="button primary icon solid fa-feather">
-                                        Autori
+                                    <Link to={"/vocabolieri"} className="button primary icon solid fa-feather">
+                                        Vocabolieri
                                     </Link>
                                 </li>
                             </ul>
