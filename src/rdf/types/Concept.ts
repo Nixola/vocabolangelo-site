@@ -85,7 +85,7 @@ export class Concept extends RDFNamedNode {
             schema.namespace("synonym"),
             (node) => new Concept(node)
         )
-        this._created = RDFStore.store.PartialValue(quadSubj, skos.namespace("prefLabel"))
+        this._created = RDFStore.store.PartialValue(quadSubj, dct.namespace("created"))
         this._notes = RDFStore.store.EachValue(quadSubj, skos.namespace("note"))
     };
 

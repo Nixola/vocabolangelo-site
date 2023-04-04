@@ -35,7 +35,7 @@ export default class Parolangelo extends React.Component<any, ParolangeloState> 
                     type={ListType.Alphabetic}
                     list={this.state.parolangelo}
                     elementKey={concept => relativeConceptUri(concept)}
-                    elementText={concept => concept.prefLabel}
+                    elementContent={concept => <p>{concept.prefLabel}</p>}
                     elementLink={concept => "/parolangelo/" + relativeConceptUri(concept)}
                  />
             }/>
