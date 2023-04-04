@@ -1,9 +1,9 @@
-import {AlphabeticList} from "../components/common/AlphabeticList";
 import React from "react";
 import {Concept} from "../rdf/types/Concept";
 import {vocang} from "../rdf/prefixes";
 import "../rdf/extensions/namedNodeExtensions"
 import DefaultLayout from "../components/common/DefaultLayout";
+import {List, ListType} from "../components/common/List";
 
 interface ParolangeloState {
     parolangelo: Concept[];
@@ -25,13 +25,19 @@ export default class Parolangelo extends React.Component<any, ParolangeloState> 
     }
 
     render() {
+        function relativeConceptUri(concept: Concept): string {
+            return concept.node.RelativeUri(vocang)
+        }
+
         return <>
             <DefaultLayout title={"Parolangelo"} content={
-                <AlphabeticList
+                <List
+                    type={ListType.Alphabetic}
                     list={this.state.parolangelo}
-                    elementName={concept => concept.prefLabel}
-                    elementLink={concept => "/parolangelo/" + concept.node.RelativeUri(vocang)}
-                />
+                    elementKey={concept => relativeConceptUri(concept)}
+                    elementText={concept => concept.prefLabel}
+                    elementLink={concept => "/parolangelo/" + relativeConceptUri(concept)}
+                 />
             }/>
         </>
     }

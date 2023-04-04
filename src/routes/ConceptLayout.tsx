@@ -4,10 +4,8 @@ import {useParams} from "react-router-dom";
 import {Concept} from "../rdf/types/Concept";
 import {RDFStore} from "../rdf/RDFStore";
 import {vocang} from "../rdf/prefixes";
-import Header from "../components/common/Header";
-import Footer from "../components/common/Footer";
 import DefaultLayout from "../components/common/DefaultLayout";
-
+import {List, ListType} from "../components/common/List";
 
 export function ConceptLayout() {
 
@@ -24,32 +22,35 @@ export function ConceptLayout() {
 
     if(concept !== undefined && concept !== null) {
         let c = concept as Concept
+        let definitionKeyCount = 0
+        let exampleKeyCount = 0
         return (
             <>
-                <DefaultLayout title={c.prefLabel} content = {
+                <DefaultLayout title={c.prefLabel} subtitle={c.pronunciation} content = {
+                    <>
                     <NamedSection
                         title={"Definizione"}
-                        content={<DefinitionList definitions={c.definitions}/>}
+                        content={<List
+                            type={ListType.Ordered}
+                            list={c.definitions}
+                            elementKey={def =>  (definitionKeyCount + 1).toString()}
+                            elementText={def => def}
+                        />}
                     />
+                    <NamedSection
+                        title={"Esempi"}
+                        content={<List
+                            type={ListType.Unordered}
+                            list={c.examples}
+                            elementKey={ex =>  (exampleKeyCount + 1).toString()}
+                            elementText={ex => ex}
+                        />}
+                    />
+                    </>
                 }/>
             </>
         );
     } else {
         return <></>
     }
-}
-
-interface DefinitionListProps {
-    definitions: string[]
-}
-function DefinitionList(props: DefinitionListProps) {
-    const {definitions} = props
-
-    return (
-        <>
-            <ol>
-                {definitions?.map(def => {return <li>{ def }</li>})}
-            </ol>
-        </>
-    );
 }
