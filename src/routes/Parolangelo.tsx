@@ -4,6 +4,7 @@ import {vocang} from "../rdf/prefixes";
 import "../rdf/extensions/namedNodeExtensions"
 import DefaultLayout from "../components/common/DefaultLayout";
 import {List, ListType} from "../components/common/List";
+import {RDFNamedNode} from "../rdf/RDFNamedNode";
 
 interface ParolangeloState {
     parolangelo: Concept[];
@@ -25,9 +26,6 @@ export default class Parolangelo extends React.Component<any, ParolangeloState> 
     }
 
     render() {
-        function relativeConceptUri(concept: Concept): string {
-            return concept.node.RelativeUri(vocang)
-        }
 
         function alphabeticStrategy(concept: Concept, letter: string){
             return concept.prefLabel.charAt(0).toLowerCase() === letter
@@ -38,9 +36,9 @@ export default class Parolangelo extends React.Component<any, ParolangeloState> 
                     <List
                         type={ListType.Alphabetic}
                         list={this.state.parolangelo}
-                        elementKey={concept => relativeConceptUri(concept)}
+                        elementKey={concept => concept.relativeUri(vocang)}
                         elementContent={concept => <p>{concept.prefLabel}</p>}
-                        elementLink={concept => "/parolangelo/" + relativeConceptUri(concept)}
+                        elementLink={concept => "/parolangelo/" + concept.relativeUri(vocang)}
                         alphabeticStrategy={alphabeticStrategy}
                     />
             }/>

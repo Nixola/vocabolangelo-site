@@ -38,7 +38,7 @@ export class Person extends RDFNamedNode {
         return this._nick
     }
 
-    public async all(): Promise<Person[]>{
+    public static async all(): Promise<Person[]>{
         let nodes = await RDFNamedNode.ofType(foaf.namespace("Person"))
         return nodes.map((node) => new Person(node))
     }
