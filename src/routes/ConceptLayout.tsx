@@ -36,6 +36,9 @@ export function ConceptLayout() {
                         <Examples concept={c}/>
                         <Images concept={c}/>
                         <Videos concept={c}/>
+                        <Synonyms concept={c}/>
+                        <Related concept={c}/>
+                        <Note concept={c}/>
                         <Created concept={c}/>
                         <Creators concept={c}/>
                     </>
@@ -143,6 +146,64 @@ function Created(props: ConceptLayoutProps){
             <NamedSection
                 title={"Data di creazione"}
                 content={<p>{props.concept.created}</p>}
+            />
+        }
+    />
+}
+
+interface OtherConceptProps {
+    title: string
+    condition: () => boolean
+    list: Concept[]
+}
+function OtherConcept(props: OtherConceptProps){
+    let conceptId = (concept: Concept) => concept.node.RelativeUri(vocang)
+    return <ConditionalComponent
+        condition={props.condition}
+        component={
+            <NamedSection
+                title={props.title}
+                content={<List
+                    type={ListType.Unordered}
+                    list={props.list}
+                    elementKey={concept => conceptId(concept)}
+                    elementLink={concept => `/parolangelo/${conceptId(concept)}`}
+                    elementContent={concept => <p>{concept.prefLabel}</p>}
+                />}
+            />
+        }
+    />
+}
+
+function Synonyms(props: ConceptLayoutProps){
+    return <OtherConcept
+        title={"Sinonimi"}
+        condition={() => props.concept.synonyms?.length > 0}
+        list={props.concept.synonyms}
+    />
+}
+
+function Related(props: ConceptLayoutProps){
+    return <OtherConcept
+        title={"Correllate"}
+        condition={() => props.concept.related?.length > 0}
+        list={props.concept.related}
+    />
+}
+
+function Note(props: ConceptLayoutProps){
+    let notesKey = 0
+    return <ConditionalComponent
+        condition={() => props.concept.notes?.length > 0}
+        component={
+            <NamedSection
+                title={"Note"}
+                content={<List
+                    type={ListType.Unordered}
+                    list={props.concept.notes}
+                    elementKey={_ => (notesKey += 1).toString()}
+                    elementContent={note => <p>{note}</p>}
+                />}
             />
         }
     />
