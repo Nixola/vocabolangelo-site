@@ -27,10 +27,6 @@ export class Concept extends RDFNamedNode {
      */
     private readonly _examples: string[] ;
     /**
-     * Mapping of http://purl.org/dc/terms/creator.
-     */
-    private readonly _creators: Person[] ;
-    /**
      * Mapping of https://schema.org/image.
      */
     private readonly _images: string[] ;
@@ -38,14 +34,6 @@ export class Concept extends RDFNamedNode {
      * Mapping of https://schema.org/video.
      */
     private readonly _videos: string[] ;
-    /**
-     * Mapping of http://rdfs.org/scot/ns#synonym.
-     */
-    private readonly _synonyms: Concept[] ;
-    /**
-     * Mapping of http://www.w3.org/2004/02/skos/core#related.
-     */
-    private readonly _related: Concept[] ;
     /**
      * Mapping of http://purl.org/dc/terms/created.
      */
@@ -62,23 +50,8 @@ export class Concept extends RDFNamedNode {
         this._pronunciation = RDFStore.store.PartialValue(quadSubj, lexinfo.namespace("pronunciation"))
         this._definitions = RDFStore.store.EachValue(quadSubj, skos.namespace("definition"))
         this._examples = RDFStore.store.EachValue(quadSubj, skos.namespace("example"))
-        this._creators = RDFStore.store.MapEachValue(
-            quadSubj,
-            dct.namespace("creator"),
-            (node) => new Person(node)
-        )
         this._images = RDFStore.store.EachValue(quadSubj, schema.namespace("image"))
         this._videos = RDFStore.store.EachValue(quadSubj, schema.namespace("video"))
-        this._synonyms = RDFStore.store.MapEachValue(
-            quadSubj,
-            schema.namespace("synonym"),
-            (node) => new Concept(node)
-        )
-        this._related = RDFStore.store.MapEachValue(
-            quadSubj,
-            schema.namespace("synonym"),
-            (node) => new Concept(node)
-        )
         this._created = RDFStore.store.PartialValue(quadSubj, dct.namespace("created"))
         this._notes = RDFStore.store.EachValue(quadSubj, skos.namespace("note"))
     };
@@ -99,8 +72,15 @@ export class Concept extends RDFNamedNode {
         return this._examples
     }
 
-    public get creators(): Person[] {
-        return this._creators
+    public get creators(): () => Person[] {
+        let subj = this.node
+        return function() : Person[] {
+            return RDFStore.store.MapEachValue(
+                subj,
+                dct.namespace("creator"),
+                (node) => new Person(node)
+            )
+        }
     }
 
     public get images(): string[] {
@@ -111,12 +91,26 @@ export class Concept extends RDFNamedNode {
         return this._videos
     }
 
-    public get synonyms(): Concept[] {
-        return this._synonyms
+    public get synonyms(): () => Concept[] {
+        let subj = this.node
+        return function() : Concept[] {
+            return RDFStore.store.MapEachValue(
+                subj,
+                schema.namespace("synonym"),
+                (node) => new Concept(node)
+            )
+        }
     }
 
-    public get related(): Concept[] {
-        return this._related
+    public get related(): () => Concept[] {
+        let subj = this.node
+        return function() : Concept[] {
+            return RDFStore.store.MapEachValue(
+                subj,
+                schema.namespace("synonym"),
+                (node) => new Concept(node)
+            )
+        }
     }
 
     public get created(): string | undefined {

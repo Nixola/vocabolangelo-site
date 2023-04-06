@@ -48,10 +48,11 @@ export class Person extends RDFNamedNode {
         return this._image
     }
 
-    public get friends(): (node: NamedNode) => Person[] {
-        return function (node: NamedNode): Person[]{
+    public get friends(): () => Person[] {
+        let subj = this.node
+        return function (): Person[]{
             return RDFStore.store.MapEachValue(
-                node,
+                subj,
                 rel.namespace("friendOf"),
                 (node) => new Person(node)
             )
@@ -59,9 +60,10 @@ export class Person extends RDFNamedNode {
     }
 
     public get partners(): (node: NamedNode) => Person[] {
-        return function (node: NamedNode): Person[]{
+        let subj = this.node
+        return function (): Person[]{
             return RDFStore.store.MapEachValue(
-                node,
+                subj,
                 rel.namespace("spouseOf"),
                 (node) => new Person(node)
             )
