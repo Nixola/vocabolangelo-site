@@ -30,32 +30,26 @@ export class Concept extends RDFNamedNode {
      * Mapping of http://purl.org/dc/terms/creator.
      */
     private readonly _creators: Person[] ;
-
     /**
      * Mapping of https://schema.org/image.
      */
     private readonly _images: string[] ;
-
     /**
      * Mapping of https://schema.org/video.
      */
     private readonly _videos: string[] ;
-
     /**
      * Mapping of http://rdfs.org/scot/ns#synonym.
      */
     private readonly _synonyms: Concept[] ;
-
     /**
      * Mapping of http://www.w3.org/2004/02/skos/core#related.
      */
     private readonly _related: Concept[] ;
-
     /**
      * Mapping of http://purl.org/dc/terms/created.
      */
     private readonly _created: string | undefined ;
-
     /**
      * Mapping of http://www.w3.org/2004/02/skos/core##related.
      */

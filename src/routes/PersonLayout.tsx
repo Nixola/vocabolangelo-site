@@ -1,4 +1,3 @@
-import {Concept} from "../rdf/types/Concept";
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {RDFStore} from "../rdf/RDFStore";
@@ -6,12 +5,9 @@ import {vocang} from "../rdf/prefixes";
 import DefaultLayout from "../components/common/DefaultLayout";
 import {Person} from "../rdf/types/Person";
 import ConditionalComponent from "../components/common/conditional/ConditionalComponent";
+import {ImageSection} from "../components/common/ImageSection";
 
-interface PersonLayoutProps{
-    person: Person
-}
-
-export function PersonLayout(props: PersonLayoutProps) {
+export function PersonLayout() {
 
     const [person, setPerson] = useState({});
     const params = useParams()
@@ -29,7 +25,14 @@ export function PersonLayout(props: PersonLayoutProps) {
     return <ConditionalComponent
         condition={() => person !== undefined && person !== null}
         component={
-            <DefaultLayout title={fullName} subtitle={p.nick} content = {<></>}/>
+            <DefaultLayout title={""} subtitle={""} content = {
+                <ImageSection
+                    content={
+                        <h2>{fullName}</h2>
+                    }
+                    imageSrc={p.image !== undefined ? p.image : ""}
+                    imageAlt={fullName}/>
+            }/>
         }
     />
 }

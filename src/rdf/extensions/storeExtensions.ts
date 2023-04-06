@@ -1,5 +1,5 @@
 import {Store} from "rdflib";
-import {Quad_Predicate, Quad_Subject} from "rdflib/lib/tf-types";
+import {Quad_Object, Quad_Predicate, Quad_Subject} from "rdflib/lib/tf-types";
 import {NamedNode} from "rdflib"
 import {mapStringFromRDF, StringCheckStrategy} from "../../util/stringChecks";
 import {RDFStore} from "../RDFStore";
@@ -7,6 +7,12 @@ import {RDFStore} from "../RDFStore";
 declare module 'rdflib' {
     interface Store {
         MapEachValue<T>(s: Quad_Subject, p: Quad_Predicate, mappingFunction: (node: NamedNode)=> T): T[];
+        FilterValues<T>(
+            s: Quad_Subject,
+            p: Quad_Predicate,
+            o: Quad_Object,
+            filterFunction:  (node: NamedNode)=> boolean
+        ): T[]
         EachValue(s: Quad_Subject, p: Quad_Predicate): string[];
         ValueOrEmptyString(s:Quad_Subject, p:Quad_Predicate): string
         ValueOrFail(s:Quad_Subject, p:Quad_Predicate): string
@@ -17,7 +23,10 @@ declare module 'rdflib' {
 Store.prototype.MapEachValue = function<T>(
     s: Quad_Subject, p: Quad_Predicate, mappingFunction: (node: NamedNode)=> T
 ): T[] {
-    return this.each(s, p, undefined).map(node=> mappingFunction(node as NamedNode))
+    return this.each(s, p, undefined).map(node=> {
+        console.log(node.value)
+        return mappingFunction(node as NamedNode)
+    })
 }
 
 Store.prototype.EachValue = function (s: Quad_Subject, p: Quad_Predicate): string[] {

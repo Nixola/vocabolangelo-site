@@ -3,7 +3,6 @@ import {Person} from "../rdf/types/Person";
 import {List, ListType} from "../components/common/List";
 import {vocang} from "../rdf/prefixes";
 import DefaultLayout from "../components/common/DefaultLayout";
-import {Concept} from "../rdf/types/Concept";
 
 export default function Vocabolieri(){
 

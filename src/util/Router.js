@@ -4,6 +4,7 @@ import Parolangelo from "../routes/Parolangelo";
 import {ConceptLayout} from "../routes/ConceptLayout";
 import React from "react";
 import Vocabolieri from "../routes/Vocabolieri";
+import {PersonLayout} from "../routes/PersonLayout";
 
 export const router = createBrowserRouter([
     {
@@ -21,5 +22,9 @@ export const router = createBrowserRouter([
     {
         path: "/vocabolieri",
         element: <Vocabolieri/>,
-    }
+    },
+    {
+        path: "/vocabolieri/:personId",
+        element: <PersonLayout />
+    },
 ]);
