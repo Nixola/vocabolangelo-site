@@ -9,13 +9,10 @@ import {List, ListType} from "../components/common/List";
 import {Person} from "../rdf/types/Person";
 import ConditionalComponent from "../components/common/conditional/ConditionalComponent";
 
-interface ConceptLayoutProps{
-    concept: Concept
-}
-
 export function ConceptLayout() {
 
-    const [concept, setConcept] = useState({});
+    const [concept, setConcept] =
+        useState<Concept | undefined>(undefined);
     const params = useParams()
 
     useEffect(() => {
@@ -26,21 +23,20 @@ export function ConceptLayout() {
         )
     }, [params.conceptId])
 
-    if(concept !== undefined && concept !== null) {
-        let c = concept as Concept
+    if(concept !== undefined) {
         return (
             <>
-                <DefaultLayout title={c.prefLabel} subtitle={c.pronunciation} content = {
+                <DefaultLayout title={concept.prefLabel} subtitle={concept.pronunciation} content = {
                     <>
-                        <Definitions concept={c}/>
-                        <Examples concept={c}/>
-                        <Images concept={c}/>
-                        <Videos concept={c}/>
-                        <Synonyms concept={c}/>
-                        <Related concept={c}/>
-                        <Note concept={c}/>
-                        <Created concept={c}/>
-                        <Creators concept={c}/>
+                        <Definitions concept={concept}/>
+                        <Examples concept={concept}/>
+                        <Images concept={concept}/>
+                        <Videos concept={concept}/>
+                        <Synonyms concept={concept}/>
+                        <Related concept={concept}/>
+                        <Note concept={concept}/>
+                        <Created concept={concept}/>
+                        <Creators concept={concept}/>
                     </>
                 }/>
             </>
@@ -50,7 +46,11 @@ export function ConceptLayout() {
     }
 }
 
-function Definitions(props: ConceptLayoutProps){
+interface ConceptSubLayoutProps {
+    concept: Concept
+}
+
+function Definitions(props: ConceptSubLayoutProps){
     let definitionKeyCount = 0
     return <NamedSection
             title={"Definizione"}
@@ -63,7 +63,7 @@ function Definitions(props: ConceptLayoutProps){
         />
 }
 
-function Examples(props: ConceptLayoutProps){
+function Examples(props: ConceptSubLayoutProps){
     let exampleKeyCount = 0
     return <ConditionalComponent
         condition={() => props.concept.examples?.length > 0} component={
@@ -72,19 +72,19 @@ function Examples(props: ConceptLayoutProps){
             content={<List
                 type={ListType.Unordered}
                 list={props.concept.examples}
-                elementKey={ex =>  (exampleKeyCount += 1).toString()}
+                elementKey={_ =>  (exampleKeyCount += 1).toString()}
                 elementContent={ex => <p>{ex}</p>}
             />}
         />
     }/>
 }
-function Creators(props: ConceptLayoutProps){
+function Creators(props: ConceptSubLayoutProps){
     let creatorId = (creator: Person) => creator.node.RelativeUri(vocang)
     return <NamedSection
                 title={"Vocabolieri"}
                 content={<List
                     type={ListType.Unordered}
-                    list={props.concept.creators}
+                    list={props.concept.creators()}
                     elementKey={creator =>  creatorId(creator)}
                     elementLink={creator => `/vocabolieri/${creatorId(creator)}`}
                     elementContent={creator => <p>{creator.firstName} {creator.lastName}</p>}
@@ -92,7 +92,7 @@ function Creators(props: ConceptLayoutProps){
             />
 }
 
-function Images(props: ConceptLayoutProps){
+function Images(props: ConceptSubLayoutProps){
     let imageKetCount = 0
     return <ConditionalComponent
         condition={() => props.concept.images?.length > 0}
@@ -102,7 +102,7 @@ function Images(props: ConceptLayoutProps){
                 content={<List
                     type={ListType.Unordered}
                     list={props.concept.images}
-                    elementKey={image =>  (imageKetCount += 1).toString()}
+                    elementKey={_ =>  (imageKetCount += 1).toString()}
                     elementContent={image =>
                         <span className="image left">
                         <img src={image} alt={props.concept.prefLabel}/>
@@ -114,7 +114,7 @@ function Images(props: ConceptLayoutProps){
     />
 }
 
-function Videos(props: ConceptLayoutProps){
+function Videos(props: ConceptSubLayoutProps){
     let videosKeyCount = 0
     return <ConditionalComponent
         condition={() => props.concept.videos?.length > 0}
@@ -139,7 +139,7 @@ function Videos(props: ConceptLayoutProps){
     />
 }
 
-function Created(props: ConceptLayoutProps){
+function Created(props: ConceptSubLayoutProps){
     return <ConditionalComponent
         condition={() => props.concept.created !== undefined}
         component={
@@ -175,23 +175,23 @@ function OtherConcept(props: OtherConceptProps){
     />
 }
 
-function Synonyms(props: ConceptLayoutProps){
+function Synonyms(props: ConceptSubLayoutProps){
     return <OtherConcept
         title={"Sinonimi"}
-        condition={() => props.concept.synonyms?.length > 0}
-        list={props.concept.synonyms}
+        condition={() => props.concept.synonyms().length > 0}
+        list={props.concept.synonyms()}
     />
 }
 
-function Related(props: ConceptLayoutProps){
+function Related(props: ConceptSubLayoutProps){
     return <OtherConcept
         title={"Correllate"}
-        condition={() => props.concept.related?.length > 0}
-        list={props.concept.related}
+        condition={() => props.concept.related()?.length > 0}
+        list={props.concept.related()}
     />
 }
 
-function Note(props: ConceptLayoutProps){
+function Note(props: ConceptSubLayoutProps){
     let notesKey = 0
     return <ConditionalComponent
         condition={() => props.concept.notes?.length > 0}

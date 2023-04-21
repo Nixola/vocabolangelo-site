@@ -1,7 +1,8 @@
 import {RDFNamedNode} from "../RDFNamedNode";
 import {NamedNode} from "rdflib"
-import {foaf, rel, schema} from "../prefixes";
+import {dct, foaf, rel, schema} from "../prefixes";
 import {RDFStore} from "../RDFStore";
+import {Concept} from "./Concept";
 
 /**
  * Class representing a http://xmlns.com/foaf/0.1/Person.
@@ -59,9 +60,9 @@ export class Person extends RDFNamedNode {
         }
     }
 
-    public get partners(): (node: NamedNode) => Person[] {
+    public get partners(): () => Person[] {
         let subj = this.node
-        return function (): Person[]{
+        return function (): Person[] {
             return RDFStore.store.MapEachValue(
                 subj,
                 rel.namespace("spouseOf"),

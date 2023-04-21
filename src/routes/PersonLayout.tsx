@@ -9,7 +9,8 @@ import {ImageSection} from "../components/common/ImageSection";
 
 export function PersonLayout() {
 
-    const [person, setPerson] = useState({});
+    const [person, setPerson] =
+        useState<Person | undefined>(undefined);
     const params = useParams()
 
     useEffect(() => {
@@ -20,19 +21,22 @@ export function PersonLayout() {
         )
     }, [params.personId])
 
-    let p = person as Person
-    let fullName = `${p.firstName} ${p.lastName}`
-    return <ConditionalComponent
-        condition={() => person !== undefined && person !== null}
-        component={
-            <DefaultLayout title={""} subtitle={""} content = {
-                <ImageSection
-                    content={
-                        <h2>{fullName}</h2>
-                    }
-                    imageSrc={p.image !== undefined ? p.image : ""}
-                    imageAlt={fullName}/>
-            }/>
-        }
-    />
+    if(person !== undefined) {
+        let fullName = `${person.firstName} ${person.lastName}`
+        return <ConditionalComponent
+            condition={() => person !== undefined && person !== null}
+            component={
+                <DefaultLayout title={""} subtitle={""} content = {
+                    <ImageSection
+                        content={
+                            <h2>{fullName}</h2>
+                        }
+                        imageSrc={person.image !== undefined ? person.image : ""}
+                        imageAlt={fullName}/>
+                }/>
+            }
+        />
+    } else {
+        return <> </>
+    }
 }

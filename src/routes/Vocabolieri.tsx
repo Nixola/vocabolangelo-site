@@ -24,7 +24,7 @@ export default function Vocabolieri(){
             list={people}
             elementKey={person => person.relativeUri(vocang)}
             elementContent={person => <p>{person.lastName} {person.firstName}</p>}
-            elementLink={person => "/parolangelo/" + person.relativeUri(vocang)}
+            elementLink={person => "/vocabolieri/" + person.relativeUri(vocang)}
             alphabeticStrategy={alphabeticStrategy}
         />
     }/>
