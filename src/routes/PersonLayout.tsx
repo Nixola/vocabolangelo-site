@@ -36,6 +36,8 @@ export function PersonLayout() {
                             imageSrc={person.image !== undefined ? person.image : ""}
                             imageAlt={person.fullName()}/>
                         <Friends person={person}/>
+                        <Partners person={person}/>
+
                     </>
                 }/>
 
@@ -61,7 +63,25 @@ function Friends(props: PersonSubLayoutProps){
                 list={friends}
                 elementKey={p => p.node.RelativeUri(vocang)}
                 elementContent={p => <p>{p.fullName()}</p>}
+                elementLink={p =>`/vocabolieri/${p.node.RelativeUri(vocang)}`}
             />}
         />
     }/>
+}
+function Partners(props: PersonSubLayoutProps){
+    let partners = props.person.partners()
+    return <ConditionalComponent
+        condition={() => partners?.length > 0}
+        component={
+            <NamedSection
+                title={"Partner"}
+                content={<List
+                    type={ListType.Unordered}
+                    list={partners}
+                    elementKey={p => p.node.RelativeUri(vocang)}
+                    elementContent={p => <p>{p.fullName()}</p>}
+                    elementLink={p =>`/vocabolieri/${p.node.RelativeUri(vocang)}`}
+                />}
+            />
+        }/>
 }
