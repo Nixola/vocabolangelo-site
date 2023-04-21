@@ -6,6 +6,8 @@ import DefaultLayout from "../components/common/DefaultLayout";
 import {Person} from "../rdf/types/Person";
 import ConditionalComponent from "../components/common/conditional/ConditionalComponent";
 import {ImageSection} from "../components/common/ImageSection";
+import {NamedSection} from "../components/common/NamedSection";
+import {List, ListType} from "../components/common/List";
 
 export function PersonLayout() {
 
@@ -22,21 +24,44 @@ export function PersonLayout() {
     }, [params.personId])
 
     if(person !== undefined) {
-        let fullName = `${person.firstName} ${person.lastName}`
         return <ConditionalComponent
-            condition={() => person !== undefined && person !== null}
+            condition={() => person !== undefined}
             component={
                 <DefaultLayout title={""} subtitle={""} content = {
-                    <ImageSection
-                        content={
-                            <h2>{fullName}</h2>
-                        }
-                        imageSrc={person.image !== undefined ? person.image : ""}
-                        imageAlt={fullName}/>
+                    <>
+                        <ImageSection
+                            content={
+                                <h2>{person.fullName()}</h2>
+                            }
+                            imageSrc={person.image !== undefined ? person.image : ""}
+                            imageAlt={person.fullName()}/>
+                        <Friends person={person}/>
+                    </>
                 }/>
+
             }
         />
     } else {
-        return <> </>
+        return <></>
     }
+}
+interface PersonSubLayoutProps {
+    person: Person
+}
+
+function Friends(props: PersonSubLayoutProps){
+    let friends = props.person.friends()
+    return <ConditionalComponent
+        condition={() => friends?.length > 0}
+        component={
+        <NamedSection
+            title={"Amici"}
+            content={<List
+                type={ListType.Unordered}
+                list={friends}
+                elementKey={p => p.node.RelativeUri(vocang)}
+                elementContent={p => <p>{p.fullName()}</p>}
+            />}
+        />
+    }/>
 }

@@ -41,6 +41,14 @@ export class Person extends RDFNamedNode {
         return this._lastName
     }
 
+    public fullName(isLastNameBefore = false): string {
+        if (isLastNameBefore) {
+            return `${this._lastName} ${this._firstName}`
+        } else {
+            return `${this._firstName} ${this._lastName}`
+        }
+    }
+
     public get nick(): string | undefined {
         return this._nick
     }
