@@ -18,14 +18,18 @@ export default function Vocabolieri(){
         return person.lastName.charAt(0).toLowerCase() === letter
     }
 
-    return <DefaultLayout title={"Vocabolieri"} content={
-        <List
-            type={ListType.Alphabetic}
-            list={people}
-            elementKey={person => person.relativeUri(vocang)}
-            elementContent={person => <p>{person.lastName} {person.firstName}</p>}
-            elementLink={person => "/vocabolieri/" + person.relativeUri(vocang)}
-            alphabeticStrategy={alphabeticStrategy}
-        />
-    }/>
+    return <DefaultLayout
+        title={"Vocabolieri"}
+        subtitle={null}
+        content={
+            <List
+                type={ListType.Alphabetic}
+                list={people}
+                elementKey={person => person.relativeUri(vocang)}
+                elementContent={person => <p>{person.lastName} {person.firstName}</p>}
+                elementLink={person => "/vocabolieri/" + person.relativeUri(vocang)}
+                alphabeticStrategy={alphabeticStrategy}
+            />
+        }
+    />
 }

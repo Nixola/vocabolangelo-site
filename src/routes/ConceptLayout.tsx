@@ -26,7 +26,10 @@ export function ConceptLayout() {
     if(concept !== undefined) {
         return (
             <>
-                <DefaultLayout title={concept.prefLabel} subtitle={concept.pronunciation} content = {
+                <DefaultLayout
+                    title={concept.prefLabel}
+                   subtitle={concept.pronunciation}
+                   content = {
                     <>
                         <Definitions concept={concept}/>
                         <Examples concept={concept}/>

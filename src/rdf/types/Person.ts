@@ -1,8 +1,8 @@
 import {RDFNamedNode} from "../RDFNamedNode";
 import {NamedNode} from "rdflib"
-import {dct, foaf, rel, schema} from "../prefixes";
+import {foaf, rel, schema} from "../prefixes";
 import {RDFStore} from "../RDFStore";
-import {Concept} from "./Concept";
+import {requireNotNull} from "../../util/requireNotNull";
 
 /**
  * Class representing a http://xmlns.com/foaf/0.1/Person.
@@ -19,18 +19,22 @@ export class Person extends RDFNamedNode {
     /**
      * Mapping of http://xmlns.com/foaf/0.1/nickname.
      */
-    private readonly _nick?: string ;
+    private readonly _nick: string | null;
     /**
      * Mapping of https://schema.org/image.
      */
-    private readonly _image?: string;
+    private readonly _image: string | null;
 
     constructor(node: NamedNode){
         super(node)
-        this._firstName = RDFStore.store.ValueOrEmptyString(node, foaf.namespace("firstName"))
-        this._lastName = RDFStore.store.ValueOrEmptyString(node, foaf.namespace("lastName"))
-        this._nick = RDFStore.store.PartialValue(node, foaf.namespace("nick"))
-        this._image = RDFStore.store.PartialValue(node, schema.namespace("image"))
+        this._firstName = requireNotNull(
+            RDFStore.store.MapAnyValue(node, foaf.namespace("firstName"), undefined)
+        )
+        this._lastName = requireNotNull(
+            RDFStore.store.MapAnyValue(node, foaf.namespace("lastName"), undefined)
+        )
+        this._nick = RDFStore.store.MapAnyValue(node, foaf.namespace("nick"), undefined)
+        this._image = RDFStore.store.MapAnyValue(node, schema.namespace("image"), undefined)
     };
 
     public get firstName(): string {
@@ -49,20 +53,21 @@ export class Person extends RDFNamedNode {
         }
     }
 
-    public get nick(): string | undefined {
+    public get nick(): string | null {
         return this._nick
     }
 
-    public get image(): string | undefined {
+    public get image(): string | null {
         return this._image
     }
 
     public get friends(): () => Person[] {
         let subj = this.node
         return function (): Person[]{
-            return RDFStore.store.MapEachValue(
+            return RDFStore.store.MapEach(
                 subj,
                 rel.namespace("friendOf"),
+                undefined,
                 (node) => new Person(node)
             )
         }
@@ -71,9 +76,10 @@ export class Person extends RDFNamedNode {
     public get partners(): () => Person[] {
         let subj = this.node
         return function (): Person[] {
-            return RDFStore.store.MapEachValue(
+            return RDFStore.store.MapEach(
                 subj,
                 rel.namespace("spouseOf"),
+                undefined,
                 (node) => new Person(node)
             )
         }

@@ -4,7 +4,7 @@ import React from "react";
 
 interface DefaultLayoutProps {
     title: string
-    subtitle?: string
+    subtitle: string | null
     content: JSX.Element
 }
 
@@ -17,7 +17,7 @@ export default function DefaultLayout(props: DefaultLayoutProps) {
                 <div className="inner">
                     <header>
                         <h1>{title}</h1>
-                        <p>{subtitle}</p>
+                        {subtitle !== null ? <p>subtitle</p> : <></>}
                     </header>
                     <div className="index align-left"> {content} </div>
                 </div>

@@ -1,48 +1,108 @@
 import {Store} from "rdflib";
 import {Quad_Object, Quad_Predicate, Quad_Subject} from "rdflib/lib/tf-types";
 import {NamedNode} from "rdflib"
-import {mapStringFromRDF, StringCheckStrategy} from "../../util/stringChecks";
 import {RDFStore} from "../RDFStore";
 
 declare module 'rdflib' {
     interface Store {
-        MapEachValue<T>(s: Quad_Subject, p: Quad_Predicate, mappingFunction: (node: NamedNode)=> T): T[];
-        FilterValues<T>(
-            s: Quad_Subject,
-            p: Quad_Predicate,
-            o: Quad_Object,
-            filterFunction:  (node: NamedNode)=> boolean
-        ): T[]
-        EachValue(s: Quad_Subject, p: Quad_Predicate): string[];
-        ValueOrEmptyString(s:Quad_Subject, p:Quad_Predicate): string
-        ValueOrFail(s:Quad_Subject, p:Quad_Predicate): string
-        PartialValue(s: Quad_Subject, p: Quad_Predicate): string | undefined
+
+        // @ts-ignore
+        // @ts-ignore
+        /**
+         * Map the resulting array of NamedNode retrieved using the "each" function and map them to instances of T
+         * using a mapping function.
+         * @template T
+         * @param {Quad_Subject} [s=undefined] the Quad_Subject.
+         * @param {Quad_Predicate} [p=undefined] the Quad_Predicate.
+         * @param {Quad_Object} [o=undefined] the Quad_Object.
+         * @param mappingFunction a Mapping function from a NamedNode to a generic T.
+         * @returns {T[]}
+         */
+        MapEach<T>(
+            s: Quad_Subject | undefined,
+            p: Quad_Predicate | undefined,
+            o: Quad_Object | undefined,
+            mappingFunction: (node: NamedNode) => T
+        ): T[];
+
+        /**
+         * Map the resulting array of NamedNode retrieved using the "each" function and map them to instances of a
+         * string, accessing their value.
+         * @param {Quad_Subject} [s=undefined] the Quad_Subject.
+         * @param {Quad_Predicate} [p=undefined] the Quad_Predicate.
+         * @param {Quad_Object} [o=undefined] the Quad_Object.
+         * @returns {string[]}
+         */
+        MapEachToValue(
+            s: Quad_Subject | undefined,
+            p: Quad_Predicate | undefined,
+            o: Quad_Object | undefined
+        ): string[];
+
+        /**
+         * Map the resulting NamedNode retrieved using the "any" function and map it to an instance of T using a mapping
+         * function. If a node could not be found, null is returned.
+         * @template T
+         * @param {Quad_Subject} [s=undefined] the Quad_Subject.
+         * @param {Quad_Predicate} [p=undefined] the Quad_Predicate.
+         * @param {Quad_Object} [o=undefined] the Quad_Object.
+         * @param mappingFunction a Mapping function from a NamedNode to a generic T.
+         * @returns {T | null}
+         */
+        MapAny<T>(
+            s: Quad_Subject | undefined,
+            p: Quad_Predicate | undefined,
+            o: Quad_Object | undefined,
+            mappingFunction: (node: NamedNode) => T
+        ): T | null
+
+        /**
+         * Map the resulting NamedNode retrieved using the "any" function and map it to an instance of a string,
+         * accessing its value. If a node could not be found, null is returned.
+         * @param {Quad_Subject} [s=undefined] the Quad_Subject.
+         * @param {Quad_Predicate} [p=undefined] the Quad_Predicate.
+         * @param {Quad_Object} [o=undefined] the Quad_Object.
+         * @returns {string}
+         */
+        MapAnyValue(
+            s: Quad_Subject | undefined,
+            p: Quad_Predicate | undefined,
+            o: Quad_Object | undefined
+        ): string | null
     }
 }
 
-Store.prototype.MapEachValue = function<T>(
-    s: Quad_Subject, p: Quad_Predicate, mappingFunction: (node: NamedNode)=> T
+Store.prototype.MapEach = function<T>(
+    s: Quad_Subject | undefined,
+    p: Quad_Predicate | undefined,
+    o: Quad_Object | undefined,
+    mappingFunction: (node: NamedNode) => T
 ): T[] {
-    return this.each(s, p, undefined).map(node=> mappingFunction(node as NamedNode))
+    return this.each(s, p, o).map(node=> mappingFunction(node as NamedNode))
 }
 
-Store.prototype.EachValue = function (s: Quad_Subject, p: Quad_Predicate): string[] {
-    return this.MapEachValue(s, p, (node) => node.value)
+Store.prototype.MapEachToValue = function (
+    s: Quad_Subject | undefined,
+    p: Quad_Predicate | undefined,
+    o: Quad_Predicate | undefined
+): string[] {
+    return this.MapEach(s, p, o, (node) => node.value)
 }
 
-Store.prototype.ValueOrEmptyString = function (s: Quad_Subject, p: Quad_Predicate): string {
-    return valueOrStrategy(s, p, StringCheckStrategy.Blank) as string
+Store.prototype.MapAny = function<T> (
+    s: Quad_Subject | undefined,
+    p: Quad_Predicate | undefined,
+    o: Quad_Object | undefined,
+    mappingFunction: (node: NamedNode) => T
+): T | null {
+    let value = RDFStore.store.any(s, p, o)
+    return value === null ? null : mappingFunction(value as NamedNode)
 }
 
-Store.prototype.ValueOrFail = function (s: Quad_Subject, p: Quad_Predicate): string {
-    return valueOrStrategy(s, p, StringCheckStrategy.Fail) as string
+Store.prototype.MapAnyValue = function (
+    s: Quad_Subject | undefined,
+    p: Quad_Predicate | undefined,
+    o: Quad_Object | undefined
+): string | null {
+    return this.MapAny(s, p, o, (node) => node.value)
 }
-
-Store.prototype.PartialValue = function (s: Quad_Subject, p: Quad_Predicate): string | undefined {
-    return valueOrStrategy(s, p, StringCheckStrategy.Undefined)
-}
-function valueOrStrategy(s: Quad_Subject, p: Quad_Predicate, strategy: StringCheckStrategy): string | undefined{
-    return mapStringFromRDF(RDFStore.store.any(s, p)?.value, strategy)
-}
-
-

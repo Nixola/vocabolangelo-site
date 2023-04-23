@@ -29,12 +29,15 @@ export function PersonLayout() {
             component={
                 <DefaultLayout title={""} subtitle={""} content = {
                     <>
-                        <ImageSection
-                            content={
-                                <h2>{person.fullName()}</h2>
-                            }
-                            imageSrc={person.image !== undefined ? person.image : ""}
-                            imageAlt={person.fullName()}/>
+                        {person.image !== null ?
+                            <ImageSection
+                                content={<h2>{person.fullName()}</h2>}
+                                imageSrc={person.image}
+                                imageAlt={person.fullName()}
+                            />
+                            :
+                            <></>
+                        }
                         <Friends person={person}/>
                         <Partners person={person}/>
                     </>

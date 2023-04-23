@@ -5,6 +5,7 @@ import {RDFStore} from "../RDFStore";
 import {dct, lexinfo, schema, skos} from "../prefixes";
 import "../extensions/storeExtensions"
 import {Person} from "./Person";
+import {requireNotNull} from "../../util/requireNotNull";
 
 /**
  * Class representing a http://www.w3.org/2004/02/skos/core#Concept.
@@ -17,7 +18,7 @@ export class Concept extends RDFNamedNode {
     /**
      * Mapping of http://www.lexinfo.net/ontology/2.0/lexinfo#pronunciation
      */
-    private readonly _pronunciation: string | undefined ;
+    private readonly _pronunciation: string | null ;
     /**
      * Mapping of http://www.w3.org/2004/02/skos/core#definition.
      */
@@ -37,7 +38,7 @@ export class Concept extends RDFNamedNode {
     /**
      * Mapping of http://purl.org/dc/terms/created.
      */
-    private readonly _created: string | undefined ;
+    private readonly _created: string | null ;
     /**
      * Mapping of http://www.w3.org/2004/02/skos/core##related.
      */
@@ -46,21 +47,23 @@ export class Concept extends RDFNamedNode {
     constructor(node: NamedNode){
         super(node)
         let quadSubj = this.node as Quad_Subject
-        this._prefLabel = RDFStore.store.ValueOrFail(quadSubj, skos.namespace("prefLabel"))
-        this._pronunciation = RDFStore.store.PartialValue(quadSubj, lexinfo.namespace("pronunciation"))
-        this._definitions = RDFStore.store.EachValue(quadSubj, skos.namespace("definition"))
-        this._examples = RDFStore.store.EachValue(quadSubj, skos.namespace("example"))
-        this._images = RDFStore.store.EachValue(quadSubj, schema.namespace("image"))
-        this._videos = RDFStore.store.EachValue(quadSubj, schema.namespace("video"))
-        this._created = RDFStore.store.PartialValue(quadSubj, dct.namespace("created"))
-        this._notes = RDFStore.store.EachValue(quadSubj, skos.namespace("note"))
+        this._prefLabel = requireNotNull(
+            RDFStore.store.MapAnyValue(quadSubj, skos.namespace("prefLabel"), undefined)
+        )
+        this._pronunciation = RDFStore.store.MapAnyValue(quadSubj, lexinfo.namespace("pronunciation"), undefined)
+        this._definitions = RDFStore.store.MapEachToValue(quadSubj, skos.namespace("definition"), undefined)
+        this._examples = RDFStore.store.MapEachToValue(quadSubj, skos.namespace("example"), undefined)
+        this._images = RDFStore.store.MapEachToValue(quadSubj, schema.namespace("image"), undefined)
+        this._videos = RDFStore.store.MapEachToValue(quadSubj, schema.namespace("video"), undefined)
+        this._created = RDFStore.store.MapAnyValue(quadSubj, dct.namespace("created"), undefined)
+        this._notes = RDFStore.store.MapEachToValue(quadSubj, skos.namespace("note"), undefined)
     };
 
     public get prefLabel(): string {
         return this._prefLabel
     }
 
-    public get pronunciation(): string | undefined {
+    public get pronunciation(): string | null {
         return this._pronunciation
     }
 
@@ -75,9 +78,10 @@ export class Concept extends RDFNamedNode {
     public get creators(): () => Person[] {
         let subj = this.node
         return function() : Person[] {
-            return RDFStore.store.MapEachValue(
+            return RDFStore.store.MapEach(
                 subj,
                 dct.namespace("creator"),
+                undefined,
                 (node) => new Person(node)
             )
         }
@@ -94,9 +98,10 @@ export class Concept extends RDFNamedNode {
     public get synonyms(): () => Concept[] {
         let subj = this.node
         return function() : Concept[] {
-            return RDFStore.store.MapEachValue(
+            return RDFStore.store.MapEach(
                 subj,
                 schema.namespace("synonym"),
+                undefined,
                 (node) => new Concept(node)
             )
         }
@@ -105,15 +110,16 @@ export class Concept extends RDFNamedNode {
     public get related(): () => Concept[] {
         let subj = this.node
         return function() : Concept[] {
-            return RDFStore.store.MapEachValue(
+            return RDFStore.store.MapEach(
                 subj,
                 schema.namespace("synonym"),
+                undefined,
                 (node) => new Concept(node)
             )
         }
     }
 
-    public get created(): string | undefined {
+    public get created(): string | null {
         return this._created
     }
 
