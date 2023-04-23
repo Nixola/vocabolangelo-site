@@ -33,8 +33,8 @@ export function PersonLayout() {
                     subtitle={null}
                     content = {
                         <>
-                            {person.image !== null ?
-                                <></>
+                            {person.images !== null ?
+                                <Images person={person}/>
                                 :
                                 <></>
                             }
@@ -144,5 +144,26 @@ function Contribution(props: PersonSubLayoutProps){
                 </>
                 }
             />
+        }/>
+}
+
+function Images(props: PersonSubLayoutProps) {
+    let images = props.person.images
+    return <ConditionalComponent
+        condition={() => images?.length > 0}
+        component={
+            <NamedSection
+                title={"Foto"}
+                content={
+                    <List
+                        listStyle={"none"}
+                        isOrdered={false}
+                        list={images}
+                        elementKey={i => i}
+                        elementContent={i => <img style={{borderRadius:"50%", maxWidth:"25vw"}} src={i} alt={ props.person.fullName()}/>}
+                    />
+                }
+            />
+
         }/>
 }

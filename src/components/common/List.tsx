@@ -4,10 +4,11 @@ import {ListProps} from "./ListProps";
 
 interface MaybeOrderedListProps<T> extends ListProps<T>{
     isOrdered : boolean
+    listStyle?: string
 }
 
 export function List<T>(props: MaybeOrderedListProps<T>) {
-    const {list, elementKey, elementContent, elementLink, isOrdered} = props;
+    const {list, elementKey, elementContent, elementLink, isOrdered, listStyle} = props;
 
     function listItems<T>(
         list: T[],
@@ -25,9 +26,9 @@ export function List<T>(props: MaybeOrderedListProps<T>) {
     }
 
     if(isOrdered) {
-        return <ol>{listItems(list, elementKey, elementContent, elementLink)}</ol>
+        return <ol style={{listStyle: listStyle}}>{listItems(list, elementKey, elementContent, elementLink)}</ol>
     } else {
-        return <ul>{listItems(list, elementKey, elementContent, elementLink)}</ul>
+        return <ul style={{listStyle: listStyle}}>{listItems(list, elementKey, elementContent, elementLink)}</ul>
     }
 }
 

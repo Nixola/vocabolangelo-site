@@ -64,7 +64,7 @@ declare module 'rdflib' {
          * @param {Quad_Object} [o=undefined] the Quad_Object.
          * @returns {string}
          */
-        MapAnyValue(
+        MapAnyToValue(
             s: Quad_Subject | undefined,
             p: Quad_Predicate | undefined,
             o: Quad_Object | undefined
@@ -99,7 +99,7 @@ Store.prototype.MapAny = function<T> (
     return value === null ? null : mappingFunction(value as NamedNode)
 }
 
-Store.prototype.MapAnyValue = function (
+Store.prototype.MapAnyToValue = function (
     s: Quad_Subject | undefined,
     p: Quad_Predicate | undefined,
     o: Quad_Object | undefined

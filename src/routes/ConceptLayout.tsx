@@ -104,6 +104,7 @@ function Images(props: ConceptSubLayoutProps){
             <NamedSection
                 title={"Immagini"}
                 content={<List
+                    listStyle={"none"}
                     isOrdered={false}
                     list={props.concept.images}
                     elementKey={_ =>  (imageKetCount += 1).toString()}

@@ -48,14 +48,14 @@ export class Concept extends RDFNamedNode {
         super(node)
         let quadSubj = this.node as Quad_Subject
         this._prefLabel = requireNotNull(
-            RDFStore.store.MapAnyValue(quadSubj, skos.namespace("prefLabel"), undefined)
+            RDFStore.store.MapAnyToValue(quadSubj, skos.namespace("prefLabel"), undefined)
         )
-        this._pronunciation = RDFStore.store.MapAnyValue(quadSubj, lexinfo.namespace("pronunciation"), undefined)
+        this._pronunciation = RDFStore.store.MapAnyToValue(quadSubj, lexinfo.namespace("pronunciation"), undefined)
         this._definitions = RDFStore.store.MapEachToValue(quadSubj, skos.namespace("definition"), undefined)
         this._examples = RDFStore.store.MapEachToValue(quadSubj, skos.namespace("example"), undefined)
         this._images = RDFStore.store.MapEachToValue(quadSubj, schema.namespace("image"), undefined)
         this._videos = RDFStore.store.MapEachToValue(quadSubj, schema.namespace("video"), undefined)
-        this._created = RDFStore.store.MapAnyValue(quadSubj, dct.namespace("created"), undefined)
+        this._created = RDFStore.store.MapAnyToValue(quadSubj, dct.namespace("created"), undefined)
         this._notes = RDFStore.store.MapEachToValue(quadSubj, skos.namespace("note"), undefined)
     };
 

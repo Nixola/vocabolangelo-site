@@ -24,18 +24,18 @@ export class Person extends RDFNamedNode {
     /**
      * Mapping of https://schema.org/image.
      */
-    private readonly _image: string | null;
+    private readonly _images: string[];
 
     constructor(node: NamedNode){
         super(node)
         this._firstName = requireNotNull(
-            RDFStore.store.MapAnyValue(node, foaf.namespace("firstName"), undefined)
+            RDFStore.store.MapAnyToValue(node, foaf.namespace("firstName"), undefined)
         )
         this._lastName = requireNotNull(
-            RDFStore.store.MapAnyValue(node, foaf.namespace("lastName"), undefined)
+            RDFStore.store.MapAnyToValue(node, foaf.namespace("lastName"), undefined)
         )
-        this._nick = RDFStore.store.MapAnyValue(node, foaf.namespace("nick"), undefined)
-        this._image = RDFStore.store.MapAnyValue(node, schema.namespace("image"), undefined)
+        this._nick = RDFStore.store.MapAnyToValue(node, foaf.namespace("nick"), undefined)
+        this._images = RDFStore.store.MapEachToValue(node, schema.namespace("image"), undefined)
     };
 
     public get firstName(): string {
@@ -58,8 +58,8 @@ export class Person extends RDFNamedNode {
         return this._nick
     }
 
-    public get image(): string | null {
-        return this._image
+    public get images(): string[] {
+        return this._images
     }
 
     public get friends(): () => Person[] {
