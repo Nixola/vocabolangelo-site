@@ -1,8 +1,9 @@
 import {RDFNamedNode} from "../RDFNamedNode";
 import {NamedNode} from "rdflib"
-import {foaf, rel, schema} from "../prefixes";
+import {dct, foaf, rel, schema} from "../prefixes";
 import {RDFStore} from "../RDFStore";
 import {requireNotNull} from "../../util/requireNotNull";
+import {Concept} from "./Concept";
 
 /**
  * Class representing a http://xmlns.com/foaf/0.1/Person.
@@ -81,6 +82,18 @@ export class Person extends RDFNamedNode {
                 rel.namespace("spouseOf"),
                 undefined,
                 (node) => new Person(node)
+            )
+        }
+    }
+
+    public creatorOf(): () => Concept[] {
+        let subj = this.node
+        return function (): Concept[] {
+            return RDFStore.store.MapEach(
+                undefined,
+                dct.namespace("creator"),
+                subj,
+                (node) => new Concept(node)
             )
         }
     }

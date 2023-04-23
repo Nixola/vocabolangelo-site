@@ -5,6 +5,8 @@ import "../rdf/extensions/namedNodeExtensions"
 import DefaultLayout from "../components/common/DefaultLayout";
 import {List, ListType} from "../components/common/List";
 
+export const PAROLANGELO_ROUTE = "/parolangelo"
+
 interface ParolangeloState {
     parolangelo: Concept[];
 }

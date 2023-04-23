@@ -4,6 +4,8 @@ import {List, ListType} from "../components/common/List";
 import {vocang} from "../rdf/prefixes";
 import DefaultLayout from "../components/common/DefaultLayout";
 
+export const VOCABOLIERI_ROUTE = "/vocabolieri"
+
 export default function Vocabolieri(){
 
     const noPeople: Person[] = []

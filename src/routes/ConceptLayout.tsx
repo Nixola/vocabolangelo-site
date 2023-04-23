@@ -28,20 +28,21 @@ export function ConceptLayout() {
             <>
                 <DefaultLayout
                     title={concept.prefLabel}
-                   subtitle={concept.pronunciation}
-                   content = {
-                    <>
-                        <Definitions concept={concept}/>
-                        <Examples concept={concept}/>
-                        <Images concept={concept}/>
-                        <Videos concept={concept}/>
-                        <Synonyms concept={concept}/>
-                        <Related concept={concept}/>
-                        <Note concept={concept}/>
-                        <Created concept={concept}/>
-                        <Creators concept={concept}/>
-                    </>
-                }/>
+                    subtitle={concept.pronunciation}
+                    content = {
+                        <>
+                            <Definitions concept={concept}/>
+                            <Examples concept={concept}/>
+                            <Images concept={concept}/>
+                            <Videos concept={concept}/>
+                            <Synonyms concept={concept}/>
+                            <Related concept={concept}/>
+                            <Note concept={concept}/>
+                            <Created concept={concept}/>
+                            <Creators concept={concept}/>
+                        </>
+                    }
+                />
             </>
         );
     } else {
