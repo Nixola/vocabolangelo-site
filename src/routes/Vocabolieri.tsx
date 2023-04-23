@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {Person} from "../rdf/types/Person";
-import {List, ListType} from "../components/common/List";
 import {vocang} from "../rdf/prefixes";
 import DefaultLayout from "../components/common/DefaultLayout";
+import {AlphabeticList} from "../components/common/AlphabeticList";
 
 export const VOCABOLIERI_ROUTE = "/vocabolieri"
 
@@ -24,8 +24,7 @@ export default function Vocabolieri(){
         title={"Vocabolieri"}
         subtitle={null}
         content={
-            <List
-                type={ListType.Alphabetic}
+            <AlphabeticList
                 list={people}
                 elementKey={person => person.relativeUri(vocang)}
                 elementContent={person => <p>{person.lastName} {person.firstName}</p>}

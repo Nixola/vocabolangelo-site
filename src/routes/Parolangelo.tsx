@@ -3,7 +3,7 @@ import {Concept} from "../rdf/types/Concept";
 import {vocang} from "../rdf/prefixes";
 import "../rdf/extensions/namedNodeExtensions"
 import DefaultLayout from "../components/common/DefaultLayout";
-import {List, ListType} from "../components/common/List";
+import {AlphabeticList} from "../components/common/AlphabeticList";
 
 export const PAROLANGELO_ROUTE = "/parolangelo"
 
@@ -37,8 +37,7 @@ export default class Parolangelo extends React.Component<any, ParolangeloState> 
                 title={"Parolangelo"}
                 subtitle={null}
                 content={
-                    <List
-                        type={ListType.Alphabetic}
+                    <AlphabeticList
                         list={this.state.parolangelo}
                         elementKey={concept => concept.relativeUri(vocang)}
                         elementContent={concept => <p>{concept.prefLabel}</p>}

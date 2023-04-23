@@ -6,7 +6,7 @@ import DefaultLayout from "../components/common/DefaultLayout";
 import {Person} from "../rdf/types/Person";
 import ConditionalComponent from "../components/common/conditional/ConditionalComponent";
 import {NamedSection} from "../components/common/NamedSection";
-import {List, ListType} from "../components/common/List";
+import {List} from "../components/common/List";
 import {PAROLANGELO_ROUTE} from "./Parolangelo";
 import {VOCABOLIERI_ROUTE} from "./Vocabolieri";
 
@@ -38,10 +38,10 @@ export function PersonLayout() {
                                 :
                                 <></>
                             }
+                            <Contribution person={person}/>
                             <Friends person={person}/>
                             <Partners person={person}/>
                             <ConceptsCreated person={person}/>
-                            <Contribution person={person}/>
                         </>
                     }
                 />
@@ -64,19 +64,21 @@ function Friends(props: PersonSubLayoutProps){
         component={
         <NamedSection
             title={"Amici"}
-            content={<List
-                type={ListType.Unordered}
-                list={friends}
-                elementKey={p => p.node.RelativeUri(vocang)}
-                elementContent={p => {
-                    if (p.node.uri !== props.person.node.uri ) {
-                        return <p>{p.fullName(true)}</p>
-                    } else {
-                        return <></>
-                    }
-                }}
-                elementLink={p =>`${VOCABOLIERI_ROUTE}/${p.node.RelativeUri(vocang)}`}
-            />}
+            content={
+                <List
+                    isOrdered={false}
+                    list={friends}
+                    elementKey={p => p.node.RelativeUri(vocang)}
+                    elementContent={p => {
+                        if (p.node.uri !== props.person.node.uri ) {
+                            return <p>{p.fullName(true)}</p>
+                        } else {
+                            return <></>
+                        }
+                    }}
+                    elementLink={p =>`${VOCABOLIERI_ROUTE}/${p.node.RelativeUri(vocang)}`}
+                />
+            }
         />
     }/>
 }
@@ -89,13 +91,15 @@ function Partners(props: PersonSubLayoutProps){
         component={
             <NamedSection
                 title={"Partner"}
-                content={<List
-                    type={ListType.Unordered}
-                    list={partners}
-                    elementKey={p => p.node.RelativeUri(vocang)}
-                    elementContent={p => <p>{p.fullName()}</p>}
-                    elementLink={p =>`${VOCABOLIERI_ROUTE}/${p.node.RelativeUri(vocang)}`}
-                />}
+                content={
+                    <List
+                        isOrdered={false}
+                        list={partners}
+                        elementKey={p => p.node.RelativeUri(vocang)}
+                        elementContent={p => <p>{p.fullName()}</p>}
+                        elementLink={p =>`${VOCABOLIERI_ROUTE}/${p.node.RelativeUri(vocang)}`}
+                    />
+                }
             />
         }/>
 }
@@ -109,13 +113,15 @@ function ConceptsCreated(props: PersonSubLayoutProps){
         component={
             <NamedSection
                 title={"Parolangelo create"}
-                content={<List
-                    type={ListType.Unordered}
-                    list={concepts}
-                    elementKey={c => c.node.RelativeUri(vocang)}
-                    elementContent={c => <p>{c.prefLabel}</p>}
-                    elementLink={c =>`${PAROLANGELO_ROUTE}/${c.node.RelativeUri(vocang)}`}
-                />}
+                content={
+                    <List
+                        isOrdered={false}
+                        list={concepts}
+                        elementKey={c => c.node.RelativeUri(vocang)}
+                        elementContent={c => <p>{c.prefLabel}</p>}
+                        elementLink={c =>`${PAROLANGELO_ROUTE}/${c.node.RelativeUri(vocang)}`}
+                    />
+                }
             />
         }/>
 }

@@ -5,7 +5,7 @@ import {Concept} from "../rdf/types/Concept";
 import {RDFStore} from "../rdf/RDFStore";
 import {vocang} from "../rdf/prefixes";
 import DefaultLayout from "../components/common/DefaultLayout";
-import {List, ListType} from "../components/common/List";
+import {List} from "../components/common/List";
 import {Person} from "../rdf/types/Person";
 import ConditionalComponent from "../components/common/conditional/ConditionalComponent";
 
@@ -59,7 +59,7 @@ function Definitions(props: ConceptSubLayoutProps){
     return <NamedSection
             title={"Definizione"}
             content={<List
-                type={ListType.Ordered}
+                isOrdered={true}
                 list={props.concept.definitions}
                 elementKey={_ =>  (definitionKeyCount += 1).toString()}
                 elementContent={def => <p>{def}</p>}
@@ -74,7 +74,7 @@ function Examples(props: ConceptSubLayoutProps){
         <NamedSection
             title={"Esempi"}
             content={<List
-                type={ListType.Unordered}
+                isOrdered={false}
                 list={props.concept.examples}
                 elementKey={_ =>  (exampleKeyCount += 1).toString()}
                 elementContent={ex => <p>{ex}</p>}
@@ -87,7 +87,7 @@ function Creators(props: ConceptSubLayoutProps){
     return <NamedSection
                 title={"Vocabolieri"}
                 content={<List
-                    type={ListType.Unordered}
+                    isOrdered={false}
                     list={props.concept.creators()}
                     elementKey={creator =>  creatorId(creator)}
                     elementLink={creator => `/vocabolieri/${creatorId(creator)}`}
@@ -104,13 +104,13 @@ function Images(props: ConceptSubLayoutProps){
             <NamedSection
                 title={"Immagini"}
                 content={<List
-                    type={ListType.Unordered}
+                    isOrdered={false}
                     list={props.concept.images}
                     elementKey={_ =>  (imageKetCount += 1).toString()}
                     elementContent={image =>
                         <span className="image left">
-                        <img src={image} alt={props.concept.prefLabel}/>
-                    </span>
+                            <img src={image} alt={props.concept.prefLabel}/>
+                        </span>
                     }
                 />}
             />
@@ -126,18 +126,20 @@ function Videos(props: ConceptSubLayoutProps){
             <NamedSection
                 title={"Video"}
                 content={
-                <List type={ListType.Unordered}
-                    list={props.concept.videos}
-                    elementKey={_ =>  (videosKeyCount += 1).toString()}
-                    elementContent={video =>
-                        <span className="image left">
-                            <video width="50%" height="auto" autoPlay muted loop>
-                                <source src={video} type="video/mp4"/>
-                                Riproduzione del video non supportata dal tuo browser.
-                            </video>
-                        </span>
-                    }
-                />}
+                    <List
+                        isOrdered={false}
+                        list={props.concept.videos}
+                        elementKey={_ =>  (videosKeyCount += 1).toString()}
+                        elementContent={video =>
+                            <span className="image left">
+                                <video width="50%" height="auto" autoPlay muted loop>
+                                    <source src={video} type="video/mp4"/>
+                                    Riproduzione del video non supportata dal tuo browser.
+                                </video>
+                            </span>
+                        }
+                    />
+                }
             />
         }
     />
@@ -168,7 +170,7 @@ function OtherConcept(props: OtherConceptProps){
             <NamedSection
                 title={props.title}
                 content={<List
-                    type={ListType.Unordered}
+                    isOrdered={false}
                     list={props.list}
                     elementKey={concept => conceptId(concept)}
                     elementLink={concept => `/parolangelo/${conceptId(concept)}`}
@@ -203,7 +205,7 @@ function Note(props: ConceptSubLayoutProps){
             <NamedSection
                 title={"Note"}
                 content={<List
-                    type={ListType.Unordered}
+                    isOrdered={false}
                     list={props.concept.notes}
                     elementKey={_ => (notesKey += 1).toString()}
                     elementContent={note => <p>{note}</p>}
