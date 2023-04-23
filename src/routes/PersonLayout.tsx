@@ -37,7 +37,6 @@ export function PersonLayout() {
                             imageAlt={person.fullName()}/>
                         <Friends person={person}/>
                         <Partners person={person}/>
-
                     </>
                 }/>
 
@@ -62,7 +61,13 @@ function Friends(props: PersonSubLayoutProps){
                 type={ListType.Unordered}
                 list={friends}
                 elementKey={p => p.node.RelativeUri(vocang)}
-                elementContent={p => <p>{p.fullName()}</p>}
+                elementContent={p => {
+                    if (p.node.uri !== props.person.node.uri ) {
+                        return <p>{p.fullName()}</p>
+                    } else {
+                        return <></>
+                    }
+                }}
                 elementLink={p =>`/vocabolieri/${p.node.RelativeUri(vocang)}`}
             />}
         />
