@@ -1,4 +1,6 @@
 build/
+/public/schema/vocabolangelo-merged.ttl
+
 # Created by https://www.toptal.com/developers/gitignore/api/react,node,webstorm+all,windows,macos,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=react,node,webstorm+all,windows,macos,linux
 
