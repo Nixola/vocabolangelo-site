@@ -16,13 +16,11 @@ export const GalleryElement: React.FC<GalleryElementProps> = ({ imageTitle, imag
                 </a>
                 <div className="caption">
                     <h2>{imageTitle}</h2>
-                    <ul className="actions fixed">
-                        <li>
-                            <span className="button small">
-                                {buttonText}
-                            </span>
-                        </li>
-                    </ul>
+                    <div className="actions fixed">
+                        <span className="button small">
+                        {buttonText}
+                    </span>
+                    </div>
                 </div>
             </article>
         </>

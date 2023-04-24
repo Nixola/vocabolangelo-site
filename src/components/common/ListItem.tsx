@@ -1,19 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
-export interface ListItemProps {
-    key: string;
-    content: JSX.Element;
-    link?: string;
-}
-
-export function ListItem(props: ListItemProps): JSX.Element {
-    const {key, content, link} = props
-    return <li key={key}>
-        {link===undefined ? content : <Link to={link as string}>{content}</Link>}
-    </li>;
-}
-
 export function listItems<T>(
     list: T[],
     elementKey: (node: T) => string,
@@ -21,10 +8,11 @@ export function listItems<T>(
     elementLink?: (node: T) => string
 ): JSX.Element[] {
     return list?.map(node => {
-        return <ListItem
-            key={elementKey(node)}
-            content={<>{elementContent(node)}</>}
-            link={elementLink!== undefined ? elementLink(node) : undefined}
-        />
+        return <li key={elementKey(node)}>
+            {elementLink === undefined ?
+                elementContent(node) :
+                <Link to={elementLink(node) as string}>{elementContent(node)}</Link>
+            }
+        </li>
     })
 }
