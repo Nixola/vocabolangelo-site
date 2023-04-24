@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: ["Validate RDF"]
     branches:
-      - master
+      - react
     types:
       - completed
 

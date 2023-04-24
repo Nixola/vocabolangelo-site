@@ -1,10 +1,10 @@
-name: Jekyll Deploy
+name: Deploy
 
 on:
   workflow_run:
     workflows: ["Validate RDF"]
     branches:
-      - master
+      - react
     types:
       - completed
 
