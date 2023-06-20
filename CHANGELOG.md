@@ -1,5 +1,21 @@
 # Changelog
 
+## [6.5.0](https://github.com/Vocabolangelo/vocabolangelo-site/compare/v6.4.0...v6.5.0) (2023-06-20)
+
+
+### Features
+
+* **definition:** add additional detail to cipollatte ([469cee3](https://github.com/Vocabolangelo/vocabolangelo-site/commit/469cee3f05aabbaca00ea0a65f3cc233b604cbe5))
+* **parolangelo:** add salvadino ([5761b18](https://github.com/Vocabolangelo/vocabolangelo-site/commit/5761b189f2932ed20f363cc869121c6aa70446c0))
+* **parolangelo:** add suoia ([518a569](https://github.com/Vocabolangelo/vocabolangelo-site/commit/518a569b0cd2796a1525125c7f2272e1c34f04c1))
+* **slangelo:** re-add regola arbitroia ([c741bc4](https://github.com/Vocabolangelo/vocabolangelo-site/commit/c741bc480e849d1836743b05957f4e7ee876829a))
+
+
+### Bug Fixes
+
+* **site:** correct unused imports ([57f898c](https://github.com/Vocabolangelo/vocabolangelo-site/commit/57f898cb0ec87ce46e034f935f38e23ebc4a5c2f))
+* **slangelo:** change regola arbitroia to slangelo ([1467c7f](https://github.com/Vocabolangelo/vocabolangelo-site/commit/1467c7f3eb70d726a773a73a1f1e7ec796563f82))
+
 ## [6.4.0](https://github.com/Vocabolangelo/vocabolangelo-site/compare/v6.3.0...v6.4.0) (2023-06-16)
 
 
